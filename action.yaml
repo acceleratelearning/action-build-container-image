@@ -1,0 +1,36 @@
+name: Build Container Image
+description: Build or Test a container image and apply labels
+inputs:
+  image-name:
+    description: The full image name to build
+    required: true
+  docker-context:
+    description: The directory context for docker build
+    required: false
+    default: "."
+  title:
+    description: The title to be used for a container image label
+    required: false
+    default: ""
+  description:
+    description: The description to be used for a container image label
+    required: false
+    default: ""
+  authors:
+    description: The authors to be used for a container image label
+    required: false
+    default: ""
+  documentation-url:
+    description: The documentation url to be used for a container image label
+    required: false
+    default: ""
+  test-target:
+    description: A test-target for testing the dockerfile
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+    - name: Build Container Image
+      shell: pwsh
+      run: ${{ github.action_path }}/action.ps1 -ImageName '${{ inputs.image-name }}' -DockerContext '${{ inputs.docker-context }}' -Title '${{ inputs.title }}' -Description '${{ inputs.description }}' -Authors '${{ inputs.authors }}' -DocumentationUrl '${{ inputs.documentation-url }}' -TestTarget '${{ inputs.test-target }}'
