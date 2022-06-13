@@ -47,6 +47,9 @@ if ($Authors) {
 if ($DocumentationUrl) {
     $build_args += "--label", "`"org.opencontainers.image.documentation=$DocumentationUrl`""
 }
+if ($TestTarget) {
+    $build_args += "--target", $TestTarget
+}
 $build_args += $DockerContext
 
 Write-Host '::group::Docker Build Args'
