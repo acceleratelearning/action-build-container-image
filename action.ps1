@@ -3,6 +3,7 @@
 param (
     [String]$ImageName,
     [String]$DockerContext,
+    [String]$Dockerfile,
     [String]$Title,
     [String]$Description,
     [String]$Authors,
@@ -49,6 +50,9 @@ if ($DocumentationUrl) {
 }
 if ($TestTarget) {
     $build_args += "--target", $TestTarget
+}
+if ($Dockerfile) {
+    $build_args += "--file", $Dockerfile
 }
 $build_args += $DockerContext
 

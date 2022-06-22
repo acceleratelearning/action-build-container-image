@@ -8,6 +8,10 @@ inputs:
     description: The directory context for docker build
     required: false
     default: "."
+  dockerfile:
+    description: The directory context for docker build
+    required: false
+    default: "."
   title:
     description: The title to be used for a container image label
     required: false
@@ -33,4 +37,4 @@ runs:
   steps:
     - name: Build Container Image
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1 -ImageName '${{ inputs.image-name }}' -DockerContext '${{ inputs.docker-context }}' -Title '${{ inputs.title }}' -Description '${{ inputs.description }}' -Authors '${{ inputs.authors }}' -DocumentationUrl '${{ inputs.documentation-url }}' -TestTarget '${{ inputs.test-target }}'
+      run: ${{ github.action_path }}/action.ps1 -ImageName '${{ inputs.image-name }}' -DockerContext '${{ inputs.docker-context }}' -Dockerfile '${{ inputs.dockerfile }}' -Title '${{ inputs.title }}' -Description '${{ inputs.description }}' -Authors '${{ inputs.authors }}' -DocumentationUrl '${{ inputs.documentation-url }}' -TestTarget '${{ inputs.test-target }}'
