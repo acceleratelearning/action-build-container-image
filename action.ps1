@@ -1,14 +1,17 @@
 #!/bin/env pwsh
 [CmdletBinding()]
 param (
-    [String]$ImageName,
-    [String]$DockerContext,
-    [String]$Title,
-    [String]$Description,
-    [String]$Authors,
-    [String]$DocumentationUrl,
-    [String]$TestTarget
+    [String]$ImageName = $env:INPUT_IMAGE_NAME,
+    [String]$DockerContext = $env:INPUT_DOCKER_CONTEXT,
+    [String]$Title = $env:INPUT_TITLE,
+    [String]$Description = $env:INPUT_DESCRIPTION,
+    [String]$Authors = $env:INPUT_AUTHORS,
+    [String]$DocumentationUrl = $env:INPUT_DOCUMENTATION_URL,
+    [String]$TestTarget = $env:INPUT_TEST_TARGET,
+    [String]$BuildArgs = $env:INPUT_BUILD_ARGS,
+    [String]$SecretBuildArgs = $env:INPUT_SECRET_BUILD_ARGS
 )
+
 
 $image_name_parse = ([regex]"(?<registry>[^/]+)/(?<repository>[^:]+):(?<tag>.+)").Match($ImageName)
 if (-Not $image_name_parse.Success) {
@@ -49,6 +52,16 @@ if ($DocumentationUrl) {
 }
 if ($TestTarget) {
     $build_args += "--target", $TestTarget
+}
+if ($BuildArgs) {
+    $BuildArgs -split ';' | ForEach-Object {
+        $build_args += "--build-arg", $_
+    }
+}
+if ($SecretBuildArgs) {
+    $SecretBuildArgs -split ';' | ForEach-Object {
+        $build_args += "--build-arg", $_
+    }
 }
 $build_args += $DockerContext
 

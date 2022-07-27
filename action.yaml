@@ -28,9 +28,27 @@ inputs:
     description: A test-target for testing the dockerfile
     required: false
     default: ""
+  build-args:
+    description: Additional build args based to docker build
+    required: false
+    default: ""
+  secret-build-args:
+    description: Additional build args based to docker build that are secret
+    required: false
+    default: ""
 runs:
   using: composite
   steps:
     - name: Build Container Image
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1 -ImageName '${{ inputs.image-name }}' -DockerContext '${{ inputs.docker-context }}' -Title '${{ inputs.title }}' -Description '${{ inputs.description }}' -Authors '${{ inputs.authors }}' -DocumentationUrl '${{ inputs.documentation-url }}' -TestTarget '${{ inputs.test-target }}'
+      run: ${{ github.action_path }}/action.ps1 
+      env:
+        INPUT_IMAGE_NAME: ${{ inputs.image-name }}
+        INPUT_DOCKER_CONTEXT: ${{ inputs.docker-context }} 
+        INPUT_TITLE: ${{ inputs.title }}
+        INPUT_DESCRIPTION: ${{ inputs.description }}
+        INPUT_AUTHORS: ${{ inputs.authors }}
+        INPUT_DOCUMENTATION_URL: ${{ inputs.documentation-url }}
+        INPUT_TEST_TARGET: ${{ inputs.test-target }}
+        INPUT_BUILD_ARGS: ${{ inputs.build-args }}
+        INPUT_SECRET_BUILD_ARGS: ${{ inputs.secret-build-args }}
